@@ -41,8 +41,8 @@ const Page = () => {
         // const querySnapshot = await getDocs(q);
         // if (querySnapshot.empty) {
         const promise = databases.createDocument(
-            import.meta.env.VITE_appwriteDatabaseId,
-            import.meta.env.VITE_appwriteCollectionId,
+            "66228e3f73e9e6326fd3",
+            "66228e4a5e2573d7aab7",
             ID.unique(),
             {
                 name: name,
@@ -66,8 +66,8 @@ const Page = () => {
 
     const deleteExpiredPage = async () => {
         let promise1 = databases.listDocuments(
-            import.meta.env.VITE_appwriteDatabaseId,
-            import.meta.env.VITE_appwriteCollectionId,
+            "66228e3f73e9e6326fd3",
+            "66228e4a5e2573d7aab7",
             [Query.lessThan("expirationTime", Date.now())]
         );
 
@@ -75,8 +75,8 @@ const Page = () => {
             function (response) {
                 response.documents.forEach((doc) => {
                     const promise = databases.deleteDocument(
-                        import.meta.env.VITE_appwriteDatabaseId,
-                        import.meta.env.VITE_appwriteCollectionId,
+                        "66228e3f73e9e6326fd3",
+                        "66228e4a5e2573d7aab7",
                         doc.$id
                     );
                     promise.then(
@@ -101,8 +101,8 @@ const Page = () => {
 
     const getPages = async () => {
         let promise = databases.listDocuments(
-            import.meta.env.VITE_appwriteDatabaseId,
-            import.meta.env.VITE_appwriteCollectionId,
+            "66228e3f73e9e6326fd3",
+            "66228e4a5e2573d7aab7",
             [Query.equal("name", name)]
         );
 

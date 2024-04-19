@@ -7,10 +7,7 @@ client
     .setProject(import.meta.env.VITE_appwriteProjectId);
 
 export const account = new Account(client);
-const promise = account.createEmailSession(
-    import.meta.env.VITE_appwriteEmail,
-    import.meta.env.VITE_appwritePassword
-);
+const promise = account.createEmailSession("harshdev624@gmail.com", "pavilion");
 
 promise.then(
     function (response) {
