@@ -4,7 +4,6 @@ import {
     Image,
     InputGroup,
     InputLeftAddon,
-    Text,
 } from "@chakra-ui/react";
 import "./App.css";
 import { Input } from "@chakra-ui/react";
@@ -22,13 +21,8 @@ function App() {
 
     return (
         <div className="card2">
-            <Image src="/logo1.svg" />
-            <Heading mt={20} mb={10}>
-                Share Clip mein aapka swagat hai
-            </Heading>
-            <Text fontSize="2xl">
-                Please go to any url : shareclip.vercel.app/page
-            </Text>
+            <Image src="/logo1.svg" boxSize="100px" />
+            <Heading mt={20}>ShareClip mein aapka swagat hai</Heading>
             <InputGroup
                 size={{ base: "sm", md: "lg" }}
                 mt={8}
