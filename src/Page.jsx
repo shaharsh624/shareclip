@@ -123,9 +123,9 @@ const Page = () => {
 
     return (
         <Flex direction="column" p={{ base: 4, md: 8 }} className="card">
-            <Text fontSize={{ base: "2xl", md: "4xl" }}>{name}</Text>
+            <Text fontSize={{ base: "3xl", md: "4xl" }}>{name}</Text>
             <FormControl>
-                <FormLabel mt={8} mb={2} fontSize={{ base: "lg", md: "2xl" }}>
+                <FormLabel mt={8} mb={2} fontSize={{ base: "xl", md: "2xl" }}>
                     Validity
                 </FormLabel>
                 {found ? (
@@ -136,11 +136,17 @@ const Page = () => {
                         value={validity}
                         onChange={handleSelectChange}
                     >
-                        {/* ...existing code... */}
+                        <option value={60}>In 1 minute</option>
+                        <option value={300}>In 5 minute</option>
+                        <option value={600}>In 10 minute</option>
+                        <option value={3600}>In 1 hour</option>
+                        <option value={86400}>In 1 day</option>
+                        <option value={604800}>In 1 week</option>
+                        <option value={18144000}>In 1 month</option>
                     </Select>
                 )}
                 <Flex mt={8} mb={2} direction={{ base: "column", md: "row" }}>
-                    <FormLabel fontSize={{ base: "lg", md: "2xl" }}>
+                    <FormLabel fontSize={{ base: "xl", md: "2xl" }}>
                         Enter your Text
                     </FormLabel>
                     <Spacer />
