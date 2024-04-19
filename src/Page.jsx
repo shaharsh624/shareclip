@@ -8,6 +8,7 @@ import {
     useClipboard,
     Flex,
     Spacer,
+    Text,
 } from "@chakra-ui/react";
 import { db } from "./firebaseConfig";
 import {
@@ -121,35 +122,29 @@ const Page = () => {
     };
 
     return (
-        <div className="card">
-            <h1>{name}</h1>
+        <Flex direction="column" p={{ base: 4, md: 8 }} className="card">
+            <Text fontSize={{ base: "2xl", md: "4xl" }}>{name}</Text>
             <FormControl>
-                <FormLabel mt={8} mb={2} className="label" fontSize="2xl">
+                <FormLabel mt={8} mb={2} fontSize={{ base: "lg", md: "2xl" }}>
                     Validity
                 </FormLabel>
                 {found ? (
-                    <p fontSize="">{remainingTime}</p>
+                    <Text fontSize="md">{remainingTime}</Text>
                 ) : (
                     <Select
                         placeholder="Select Validity"
                         value={validity}
                         onChange={handleSelectChange}
                     >
-                        <option value={60}>In 1 minute</option>
-                        <option value={300}>In 5 minute</option>
-                        <option value={600}>In 10 minute</option>
-                        <option value={3600}>In 1 hour</option>
-                        <option value={86400}>In 1 day</option>
-                        <option value={604800}>In 1 week</option>
-                        <option value={18144000}>In 1 month</option>
+                        {/* ...existing code... */}
                     </Select>
                 )}
-                <Flex mt={8} mb={2}>
-                    <FormLabel className="label" fontSize="2xl">
+                <Flex mt={8} mb={2} direction={{ base: "column", md: "row" }}>
+                    <FormLabel fontSize={{ base: "lg", md: "2xl" }}>
                         Enter your Text
                     </FormLabel>
                     <Spacer />
-                    <Button onClick={onCopy}>
+                    <Button mt={{ base: 2, md: 0 }} onClick={onCopy}>
                         {hasCopied ? "Copied!" : "Copy"}
                     </Button>
                 </Flex>
@@ -172,7 +167,7 @@ const Page = () => {
                     Create
                 </Button>
             </FormControl>
-        </div>
+        </Flex>
     );
 };
 
