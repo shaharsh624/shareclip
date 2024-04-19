@@ -1,0 +1,33 @@
+#root {
+    padding: 1rem;
+}
+
+.logo {
+    height: 4em;
+    padding: 1em;
+    transition: filter 0.3s ease;
+}
+
+.logo:hover {
+    filter: drop-shadow(0 0 0.5rem #646cff);
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    min-width: 1400px;
+    min-height: 70vh;
+    margin: 10px 30px;
+}
+
+@media (max-width: 768px) {
+    .card {
+        padding: 1.5rem;
+    }
+}
+
+.label {
+    font-weight: bold;
+}
