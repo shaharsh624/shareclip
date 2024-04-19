@@ -122,7 +122,7 @@ const Page = () => {
 
     return (
         <div className="card">
-            <h1>shareme/{name}</h1>
+            <h1>{name}</h1>
             <FormControl>
                 <FormLabel mt={8} mb={2} className="label" fontSize="2xl">
                     Validity
