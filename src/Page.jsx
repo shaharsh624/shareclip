@@ -145,7 +145,7 @@ const Page = () => {
     useEffect(() => {
         const intervalId = setInterval(() => {
             getPages();
-            deleteExpiredPage():
+            deleteExpiredPage();
         }, 2000);
         return () => clearInterval(intervalId);
     }, []);
