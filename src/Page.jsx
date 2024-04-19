@@ -10,15 +10,8 @@ import {
     Spacer,
     Text,
 } from "@chakra-ui/react";
-import { db } from "./firebaseConfig";
-import {
-    collection,
-    getDocs,
-    addDoc,
-    deleteDoc,
-    where,
-    query,
-} from "firebase/firestore";
+import { Client, Databases, Query } from "appwrite";
+import { ID } from "./lib/appwrite";
 import { useParams } from "react-router-dom";
 
 const Page = () => {
@@ -30,70 +23,123 @@ const Page = () => {
     const [found, setFound] = useState(false);
     const { onCopy, hasCopied } = useClipboard(text);
 
+    // APPWRITE
+    const client = new Client()
+        .setEndpoint("https://cloud.appwrite.io/v1")
+        .setProject(import.meta.env.VITE_appwriteProjectId);
+
+    const databases = new Databases(client);
+
     // FIREBASE
-    const pageCollectionRef = collection(db, "pages");
+    // const pageCollectionRef = collection(db, "pages");
 
     const createPage = async () => {
         const creationTime = Date.now();
         const expirationTime = creationTime + validity * 1000;
 
-        const q = query(pageCollectionRef, where("name", "==", name));
-        const querySnapshot = await getDocs(q);
-        if (querySnapshot.empty) {
-            await addDoc(pageCollectionRef, {
+        // const q = query(pageCollectionRef, where("name", "==", name));
+        // const querySnapshot = await getDocs(q);
+        // if (querySnapshot.empty) {
+        const promise = databases.createDocument(
+            import.meta.env.VITE_appwriteDatabaseId,
+            import.meta.env.VITE_appwriteCollectionId,
+            ID.unique(),
+            {
                 name: name,
                 text: text,
-                validity: Number(validity),
-                creationTime,
-                expirationTime,
-            });
-        } else {
-            alert("Page already exists!");
-        }
+                validity: validity,
+                expirationTime: expirationTime,
+            }
+        );
+        promise.then(
+            function (response) {
+                console.log(response);
+            },
+            function (error) {
+                console.log(error);
+            }
+        );
+        // } else {
+        // alert("Page already exists!");
+        // }
     };
 
     const deleteExpiredPage = async () => {
-        const q = query(
-            pageCollectionRef,
-            where("expirationTime", "<", Date.now())
+        let promise1 = databases.listDocuments(
+            import.meta.env.VITE_appwriteDatabaseId,
+            import.meta.env.VITE_appwriteCollectionId,
+            [Query.lessThan("expirationTime", Date.now())]
         );
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach(async (doc) => {
-            await deleteDoc(doc.ref);
-            setFound(false);
-            setText("");
-            setValidity("");
-        });
+
+        promise1.then(
+            function (response) {
+                response.documents.forEach((doc) => {
+                    const promise = databases.deleteDocument(
+                        import.meta.env.VITE_appwriteDatabaseId,
+                        import.meta.env.VITE_appwriteCollectionId,
+                        doc.$id
+                    );
+                    promise.then(
+                        function (response) {
+                            console.log(response); // Success
+                            setFound(false);
+                            setText("");
+                            setValidity("");
+                        },
+                        function (error) {
+                            console.log(error); // Failure
+                        }
+                    );
+                    console.log(response); // Success
+                });
+            },
+            function (error) {
+                console.log(error); // Failure
+            }
+        );
     };
 
     const getPages = async () => {
-        const q = query(pageCollectionRef, where("name", "==", name));
-        const querySnapshot = await getDocs(q);
+        let promise = databases.listDocuments(
+            import.meta.env.VITE_appwriteDatabaseId,
+            import.meta.env.VITE_appwriteCollectionId,
+            [Query.equal("name", name)]
+        );
 
-        querySnapshot.forEach((doc) => {
-            if (doc && doc.data().expirationTime > Date.now()) {
-                setFound(true);
-                setName(doc.data().name);
-                setText(doc.data().text);
-                const expirationTime = doc.data().expirationTime;
-                const remainingTime = expirationTime - Date.now();
-                const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
-                const hours = Math.floor(
-                    (remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-                );
-                const minutes = Math.floor(
-                    (remainingTime % (1000 * 60 * 60)) / (1000 * 60)
-                );
-                const seconds = Math.floor(
-                    (remainingTime % (1000 * 60)) / 1000
-                );
-                setRemainingTime(
-                    `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`
-                );
+        promise.then(
+            function (response) {
+                response.documents.forEach((doc) => {
+                    if (doc && doc.expirationTime > Date.now()) {
+                        setFound(true);
+                        setName(doc.name);
+                        setText(doc.text);
+                        const expirationTime = doc.expirationTime;
+                        const remainingTime = expirationTime - Date.now();
+                        const days = Math.floor(
+                            remainingTime / (1000 * 60 * 60 * 24)
+                        );
+                        const hours = Math.floor(
+                            (remainingTime % (1000 * 60 * 60 * 24)) /
+                                (1000 * 60 * 60)
+                        );
+                        const minutes = Math.floor(
+                            (remainingTime % (1000 * 60 * 60)) / (1000 * 60)
+                        );
+                        const seconds = Math.floor(
+                            (remainingTime % (1000 * 60)) / 1000
+                        );
+                        setRemainingTime(
+                            `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`
+                        );
+                    }
+                    return true;
+                });
+            },
+            function (error) {
+                console.log(error);
+                return false;
             }
-            return true;
-        });
-        return false;
+        );
     };
 
     useEffect(() => {
