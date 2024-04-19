@@ -29,17 +29,24 @@ function App() {
             <Text fontSize="2xl">
                 Please go to any url : shareclip.vercel.app/page
             </Text>
-            <InputGroup size="lg" mt={8} maxW="600px" w="100%" mx="auto">
+            <InputGroup
+                size={{ base: "sm", md: "lg" }}
+                mt={8}
+                maxW="600px"
+                w="100%"
+                mx="auto"
+            >
                 <InputLeftAddon>shareclip.vercel.app/</InputLeftAddon>
                 <Input
                     placeholder="mysite"
                     value={site}
                     onChange={(e) => setSite(e.target.value)}
                 />
-                <Button ms={5} onClick={handleGoto}>
-                    Visit
-                </Button>
             </InputGroup>
+
+            <Button mt={6} onClick={handleGoto}>
+                Visit
+            </Button>
         </div>
     );
 }
