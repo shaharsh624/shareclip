@@ -143,20 +143,14 @@ const Page = () => {
     };
 
     useEffect(() => {
-        const intervalId = setInterval(() => {
-            getPages();
-            deleteExpiredPage();
-        }, 500);
+        const fetchData = async () => {
+            await getPages();
+            await deleteExpiredPage();
+        };
+        const intervalId = setInterval(fetchData, 600);
+
         return () => clearInterval(intervalId);
     }, []);
-
-    const handleInputChange = (event) => {
-        setText(event.target.value);
-    };
-
-    const handleSelectChange = (event) => {
-        setValidity(event.target.value);
-    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -176,7 +170,9 @@ const Page = () => {
                     <Select
                         placeholder="Select Validity"
                         value={validity}
-                        onChange={handleSelectChange}
+                        onChange={(event) => {
+                            setValidity(event.target.value);
+                        }}
                     >
                         <option value={60}>In 1 minute</option>
                         <option value={300}>In 5 minute</option>
@@ -202,7 +198,9 @@ const Page = () => {
                     h={80}
                     w="full"
                     value={text}
-                    onChange={handleInputChange}
+                    onChange={(event) => {
+                        setText(event.target.value);
+                    }}
                     isReadOnly={found}
                 />
                 <Button
