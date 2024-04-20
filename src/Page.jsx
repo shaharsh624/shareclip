@@ -146,7 +146,7 @@ const Page = () => {
         const intervalId = setInterval(() => {
             getPages();
             deleteExpiredPage();
-        }, 2000);
+        }, 500);
         return () => clearInterval(intervalId);
     }, []);
 
