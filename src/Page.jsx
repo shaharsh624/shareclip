@@ -10,15 +10,14 @@ import {
     Spacer,
     Text,
 } from "@chakra-ui/react";
-import { Client, Databases, Query } from "appwrite";
-import { ID } from "./lib/appwrite";
+import { Client, Databases, Query, ID } from "appwrite";
 import { useParams } from "react-router-dom";
 
 const Page = () => {
     const { pageName } = useParams();
     const [name, setName] = useState(pageName);
     const [text, setText] = useState("");
-    const [validity, setValidity] = useState("");
+    const [validity, setValidity] = useState(0);
     const [remainingTime, setRemainingTime] = useState(null);
     const [found, setFound] = useState(false);
     const { onCopy, hasCopied } = useClipboard(text);
@@ -84,7 +83,7 @@ const Page = () => {
                             console.log(response); // Success
                             setFound(false);
                             setText("");
-                            setValidity("");
+                            setValidity(0);
                         },
                         function (error) {
                             console.log(error); // Failure
@@ -171,7 +170,7 @@ const Page = () => {
                         placeholder="Select Validity"
                         value={validity}
                         onChange={(event) => {
-                            setValidity(event.target.value);
+                            setValidity(parseInt(event.target.value, 10));
                         }}
                     >
                         <option value={60}>In 1 minute</option>
