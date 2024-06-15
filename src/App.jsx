@@ -30,7 +30,7 @@ function App() {
                 w="100%"
                 mx="auto"
             >
-                <InputLeftAddon>shareclip.vercel.app/</InputLeftAddon>
+                <InputLeftAddon>shareclip.harshshah.me/</InputLeftAddon>
                 <Input
                     placeholder="mysite"
                     value={site}
