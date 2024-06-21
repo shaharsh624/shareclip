@@ -248,7 +248,7 @@ const Page = () => {
                         <option value={3600}>In 1 hour</option>
                         <option value={86400}>In 1 day</option>
                         <option value={604800}>In 1 week</option>
-                        <option value={18144000}>In 1 month</option>
+                        <option value={2592000}>In 1 month</option>
                     </Select>
                 )}
                 <Flex mt={4} mb={2}>
