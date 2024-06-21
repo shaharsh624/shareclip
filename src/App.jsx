@@ -22,7 +22,7 @@ function App() {
     return (
         <div className="card2">
             <Image src="/logo1.svg" boxSize="100px" />
-            <Heading mt={20}>ShareClip mein aapka swagat hai</Heading>
+            <Heading mt={20}>Welcome to ShareClip</Heading>
             <InputGroup
                 size={{ base: "sm", md: "lg" }}
                 mt={8}
