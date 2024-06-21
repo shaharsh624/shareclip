@@ -48,7 +48,6 @@ const Page = () => {
                         ID.unique(),
                         file
                     );
-                    console.log(response);
                     return response.$id;
                 } catch (error) {
                     console.log(error);
@@ -92,8 +91,8 @@ const Page = () => {
         );
 
         promise.then(
-            function (response) {
-                console.log(response);
+            function () {
+                console.log("Page Created Successfully.");
             },
             function (error) {
                 console.log(error);
