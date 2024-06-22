@@ -109,20 +109,28 @@ const Page = () => {
             );
 
             for (const doc of response.documents) {
-                // Delete associated files
-                for (const fileId of doc.files) {
-                    await storage.deleteFile(
-                        import.meta.env.VITE_appwriteBucketId,
-                        fileId
-                    );
+                try {
+                    // Delete associated files
+                    for (const fileId of doc.files) {
+                        await storage.deleteFile(
+                            import.meta.env.VITE_appwriteBucketId,
+                            fileId
+                        );
+                    }
+                } catch (error) {
+                    console.error("Error deleting files:", error);
                 }
 
-                // Delete document after files deletion
-                await databases.deleteDocument(
-                    import.meta.env.VITE_appwriteDatabaseId,
-                    import.meta.env.VITE_appwriteCollectionId,
-                    doc.$id
-                );
+                try {
+                    // Delete document after files deletion
+                    await databases.deleteDocument(
+                        import.meta.env.VITE_appwriteDatabaseId,
+                        import.meta.env.VITE_appwriteCollectionId,
+                        doc.$id
+                    );
+                } catch (error) {
+                    console.error("Error deleting expired documents:", error);
+                }
                 console.log(
                     "Document and associated files deleted successfully."
                 );
@@ -235,6 +243,7 @@ const Page = () => {
                     <Text fontSize="md">{remainingTime}</Text>
                 ) : (
                     <Select
+                        id="validity"
                         placeholder="Select Validity"
                         value={validity}
                         onChange={(event) => {
@@ -326,7 +335,13 @@ const Page = () => {
                     </Grid>
                 )}
                 {fileNames.current.length > 0 && !found && (
-                    <Grid gap={5} templateColumns="repeat(4, 1fr)">
+                    <Grid
+                        gap={5}
+                        templateColumns={{
+                            base: "repeat(2, 1fr)",
+                            md: "repeat(5, 1fr)",
+                        }}
+                    >
                         {fileNames.current.map((file, index) => (
                             <GridItem
                                 key={index}
