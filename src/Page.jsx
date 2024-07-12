@@ -14,6 +14,7 @@ import {
     Link,
     Grid,
     GridItem,
+    useToast,
 } from "@chakra-ui/react";
 import { Client, Databases, Query, ID, Storage } from "appwrite";
 import { useParams } from "react-router-dom";
@@ -30,6 +31,7 @@ const Page = () => {
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const fileNames = useRef([]);
     const fileIds = useRef([]);
+    const toast = useToast();
 
     // APPWRITE
     const client = new Client()
@@ -67,37 +69,56 @@ const Page = () => {
     };
 
     const createPage = async () => {
-        const creationTime = Date.now();
-        const expirationTime = creationTime + validity * 1000;
-
-        try {
-            await uploadFilesToBucket();
-        } catch (error) {
-            console.error("Error uploading files:", error);
-            return;
+        if (uploadedFiles.length == 0) {
+            toast({
+                title: "No files uploaded",
+                description: "Please upload files if needed.",
+                status: "error",
+                duration: 2000,
+                isClosable: true,
+            });
+        } else {
+            toast({
+                title: `${uploadedFiles.length} Files uploaded`,
+                description: "",
+                status: "success",
+                duration: 2000,
+                isClosable: true,
+            });
         }
+        if (validity > 0 && (text.length > 0 || uploadedFiles.length > 0)) {
+            const creationTime = Date.now();
+            const expirationTime = creationTime + validity * 1000;
 
-        const promise = databases.createDocument(
-            import.meta.env.VITE_appwriteDatabaseId,
-            import.meta.env.VITE_appwriteCollectionId,
-            ID.unique(),
-            {
-                name: name,
-                text: text,
-                validity: validity,
-                expirationTime: expirationTime,
-                files: fileIds.current,
+            try {
+                await uploadFilesToBucket();
+            } catch (error) {
+                console.error("Error uploading files:", error);
+                return;
             }
-        );
 
-        promise.then(
-            function () {
-                console.log("Page Created Successfully.");
-            },
-            function (error) {
-                console.log(error);
-            }
-        );
+            const promise = databases.createDocument(
+                import.meta.env.VITE_appwriteDatabaseId,
+                import.meta.env.VITE_appwriteCollectionId,
+                ID.unique(),
+                {
+                    name: name,
+                    text: text,
+                    validity: validity,
+                    expirationTime: expirationTime,
+                    files: fileIds.current,
+                }
+            );
+
+            promise.then(
+                function () {
+                    console.log("Page Created Successfully.");
+                },
+                function (error) {
+                    console.log(error);
+                }
+            );
+        }
     };
 
     const deleteExpiredPage = async () => {
