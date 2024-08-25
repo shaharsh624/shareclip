@@ -1,8 +1,17 @@
-# React + Vite
+# ShareClip
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple tooI for temporary **text** and **file sharing**. Whether it's code snippets, documents or quick notes. Perfect for developers, quick file transfers, and anyone needing temporary sharing.
 
-Currently, two official plugins are available:
+Checkout at: https://shareclip.harshshah.me
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Techstack
+
+| Area           | Stack             |
+| -------------- | ----------------- |
+| Frontend       | ReactJS, ChakraUI |
+| Backend        | Appwrite          |
+| Object Storage | Appwrite          |
+| File Storage   | Appwrite          |
+| Deployment     | Vercel            |
+
+---
